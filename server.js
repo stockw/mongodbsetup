@@ -6,6 +6,8 @@ const MyFruits = require('./models/fruits')
 const app = express()
 
 app.use(express.static('public'))
+app.use(express.json())
+app.use(express.urlencoded({extended:true}));
 
 
 let connectionString = `mongodb+srv://${process.env.MONGOUSERNAME}:${process.env.MONGOPASSWORD}@mongosetupcluster.1dnn4wp.mongodb.net/fruits?retryWrites=true&w=majority`;
@@ -19,8 +21,18 @@ mongoose.connect(connectionString, {
     console.log('connected to mongo');
   });
 
-// before I can ask and send data into the collection, I need to create a model
+  MyFruits.create({
+    name: "apple",
+    color: "red",
+    age: 14,
+    readyToEat: true
+  })
 
+// before I can ask and send data into the collection, I need to create a model
+app.post('/create_fruit', (req,res) => {
+    console.log(req.body);
+    console.log("running create fruit");
+})
 app.get('/get_data', (req,res) => {
     // Get data from MongoDB
     // res.json(data)
