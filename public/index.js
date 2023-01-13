@@ -25,14 +25,14 @@ submitButton.addEventListener('click', async () => {
          readyBool: typeof readyBool
       }
 
-      console.log(fruit);
+      console.log(json.stringify(fruit));
 
       fetch('http://localhost:5000/create_fruit', {
          method: "POST",
-         body: fruit
-         headers: {
-            'Content=Type': 'application/json'
-         }
+         headers: {'Content-Type': 'application/json',
+         },
+         body: json.stringify(fruit)
+        
       })
 
 })

@@ -1,9 +1,10 @@
+
 const express = require('express')
 const mongoose = require('mongoose');
 require('dotenv').config()
 const MyFruits = require('./models/fruits')
-
 const app = express()
+
 
 app.use(express.static('public'))
 app.use(express.json())
@@ -21,24 +22,43 @@ mongoose.connect(connectionString, {
     console.log('connected to mongo');
   });
 
-  MyFruits.create({
-    name: "apple",
-    color: "red",
-    age: 14,
-    readyToEat: true
-  })
+ 
 
 // before I can ask and send data into the collection, I need to create a model
-app.post('/create_fruit', (req,res) => {
-    console.log(req.body);
-    console.log("running create fruit");
+
+app.post('/create_fruit', async (req,res) => {
+    
+    const {nameString: name, colerString: color, ageNumber: age, readyBool: readyToEat} = req.body;
+    
+
+    // // console.log("uploading to database...");
+    let returnedValue = await MyFruits.create({
+       name,
+       color,
+       age,
+       readyToEat
+    })
+    console.log(returnedValue);
+    if (returnedValue) {
+        console.log("upload complete");
+    }
+    res.send(returnedValue);
+    // {
+    //     name: "apple",
+    //     color: "red",
+    //     age: 14,
+    //     readyToEat: true
+    //   })
+      res.send("good request")
 })
 app.get('/get_data', (req,res) => {
     // Get data from MongoDB
     // res.json(data)
+    res.setHeader('Content-Type', 'application/json');
+
     console.log("request received at /get_data");
     console.log(process.env.Kingcourt86);
-    res.send({data: "response from server"})
+    res.json({data: "response from server"})
 })
 
 app.listen(5000, () => {
