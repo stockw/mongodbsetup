@@ -3,11 +3,12 @@ console.log("js file connected");
 
 let submitButton = document.getElementById('submit-button')
 
-submitButton.addEventListener('click', () => {
+submitButton.addEventListener('click', async () => {
    // send request to server
    // result is the response from server
-   let result = await fetch("http://localhost:5000/get_data")
-   console.log(result);
+   let result = await fetch("/get_data")
+   let finalData = await result.json()
+      console.log(finalData);
 })
 
 
