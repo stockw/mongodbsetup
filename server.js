@@ -1,5 +1,4 @@
-
-const express = require('express')
+const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
@@ -8,6 +7,8 @@ require('dotenv').config()
 
 // import MyFruit object from fruit.js
 const MyFruits = require('./models/fruits')
+
+const MyVeggies = require('./models/veggies');
 
 // create app by calling express function
 const app = express()
@@ -50,7 +51,7 @@ mongoose.connect(connectionString, {
 // before I can ask and send data into the collection, I need to create a model
 
 app.post('/create_fruit', async (req,res) => {
-        // destructuring - see more here: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment
+    // destructuring - see more here: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment
     // renaming variable while destrucutring: https://wesbos.com/destructuring-renaming
     const {nameString: name, colerString: color, ageNumber: age, readyBool: readyToEat} = req.body;
     
@@ -98,6 +99,33 @@ app.get('/get_food_data', async (req, res) => {
   res.json(response)
 
 });
+
+app.post('/create_veggie', async (req, res) => {
+  const {nameString: name, colerString: color, ageNumber: age, readyBool: readyToEat} = req.body
+
+  let returnedValue = await MyVeggies.create({
+    name,
+    color,
+    age,
+    readyToEat
+ })
+ console.log(returnedValue);
+    if (returnedValue) {
+        console.log("upload complete");
+    }
+    res.status(400);
+    res.send(returnedValue);
+  });
+
+app.get('/veggies', async (req, res) => {
+  let response = await MyVeggies.find({});
+  console.log(response);
+  res.json(response)
+});
+
+app.get('/veggies/:veggieName', (req, res) => {
+
+})
 
 
 

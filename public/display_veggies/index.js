@@ -1,11 +1,11 @@
-// const { response } = require("express");
+// const { response } = require('express');
 
 console.log("Display Page");
 
-let containerElement = document.getElementById('container')
+let vegcontainerElement = document.getElementById('veg-container')
 
 const getData = async () => {
-    let data = await fetch("http://localhost:5000/get_food_data");
+    let data = await fetch("http://localhost:5000/veggies");
     data.json().then((parsedData) => {
         console.log(parsedData); // array of objects
         // map through and put in HTML
@@ -20,7 +20,7 @@ const getData = async () => {
                 pTag.style.color = "green"
             }
 
-            containerElement.appendChild(pTag);
+            vegcontainerElement.appendChild(pTag);
         })
     })
 }
